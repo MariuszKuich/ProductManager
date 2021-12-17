@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pl-PL">
+<head>
+    <meta charset="UTF-8">
+    <title>Grupy produktowe</title>
+</head>
+<body>
+    <h1>Grupy produktowe</h1>
+    <br />
+    <table>
+        <tr th:each="template: ${templates}">
+            <td th:text="${template.name}" />
+            <td><a th:href="@{/product/add(productTemplateId=${template.id})}">Dodaj nowy produkt</a></td>
+        </tr>
+    </table>
+    <br />
+    <a th:href="@{/product-group/add}">Dodaj nową grupę produktową</a>
+</body>
+</html>
