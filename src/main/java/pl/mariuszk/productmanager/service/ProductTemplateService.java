@@ -16,4 +16,8 @@ public class ProductTemplateService {
     public List<ProductTemplate> getAvailableProductsTemplates() {
         return productTemplateRepository.findAll();
     }
+
+    public ProductTemplate getProductTemplateById(String templateId) {
+        return productTemplateRepository.findById(templateId).orElseThrow();
+    }
 }

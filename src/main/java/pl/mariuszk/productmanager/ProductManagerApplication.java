@@ -21,23 +21,33 @@ public class ProductManagerApplication {
     @Bean
     CommandLineRunner run(ProductTemplateRepository repository) {
         return args -> {
-            Map<String, FieldType> fields = Map.of(
-                    "Dlugosc", FieldType.LONG,
-                    "Wysokosc", FieldType.LONG,
-                    "Szerokosc", FieldType.LONG,
-                    "Kolor", FieldType.STRING);
-            ProductTemplate template = ProductTemplate.builder()
+            tryAddTemplate(repository, ProductTemplate.builder()
                     .name("Meble")
-                    .fields(fields)
+                    .fields(Map.of(
+                            "Dlugosc", FieldType.LONG,
+                            "Wysokosc", FieldType.LONG,
+                            "Szerokosc", FieldType.LONG,
+                            "Kolor", FieldType.STRING))
                     .dictionaries(Collections.singletonMap("Kolor", "KOLORY"))
-                    .build();
-            repository.findProductTemplateByName(template.getName()).ifPresentOrElse(g -> {
-                System.out.println("Podany szablon został już zapisany.");
-            }, () -> {
-                ProductTemplate savedTemplate = repository.save(template);
-                ProductTemplate retrievedTemplate = repository.findById(savedTemplate.getId()).get();
-                System.out.println(retrievedTemplate);
-            });
+                    .build());
+            tryAddTemplate(repository, ProductTemplate.builder()
+                    .name("Konsole")
+                    .fields(Map.of(
+                            "Pojemnosc dysku twardego", FieldType.STRING,
+                            "Typ konsoli", FieldType.STRING,
+                            "Kolor", FieldType.STRING))
+                    .dictionaries(Collections.singletonMap("Kolor", "KOLORY"))
+                    .build());
         };
+    }
+
+    private void tryAddTemplate(ProductTemplateRepository repository, ProductTemplate template) {
+        repository.findProductTemplateByName(template.getName()).ifPresentOrElse(g -> {
+            System.out.println("Podany szablon został już zapisany.");
+        }, () -> {
+            ProductTemplate savedTemplate = repository.save(template);
+            ProductTemplate retrievedTemplate = repository.findById(savedTemplate.getId()).get();
+            System.out.println(retrievedTemplate);
+        });
     }
 }

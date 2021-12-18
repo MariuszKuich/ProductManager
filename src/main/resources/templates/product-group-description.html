@@ -3,23 +3,29 @@
 <html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
-    <title>Grupy produktowe</title>
+    <title>Szablon grupy produktowej</title>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
 <body>
     <div class="container">
         <div class="row">
             <div class="col">
-                <h1>Grupy produktowe</h1>
+                <h1>Szablon grupy produktowej: <span th:text="${template.name}"/></h1>
                 <br />
                 <table class="table table-bordered">
-                    <tr th:each="template: ${templates}">
-                        <td><a th:href="@{'/product-group/' + ${template.id} + '/describe'}" th:text="${template.name}" /></td>
-                        <td><a th:href="@{/product/add(productTemplateId=${template.id})}">Dodaj nowy produkt</a></td>
+                    <tr>
+                        <td>Nazwa pola</td>
+                        <td>Typ wartości</td>
+                        <td>Wartość z kolekcji</td>
+                    </tr>
+                    <tr th:each="field: ${template.fields}">
+                        <td th:text="${field.key}"></td>
+                        <td th:text="${field.value}"></td>
+                        <td th:text="${template.dictionaries.get(field.key)}"></td>
                     </tr>
                 </table>
-
-                <a th:href="@{/product-group/add}">Dodaj nową grupę produktową</a>
+                <br />
+                <a th:href="@{/product-group}">Powrót do listy grup produktowych</a>
             </div>
         </div>
     </div>
