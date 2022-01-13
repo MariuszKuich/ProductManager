@@ -26,7 +26,7 @@ public class ProductManagerApplication {
                     .fields(Map.of(
                             "Dlugosc", FieldType.LONG,
                             "Wysokosc", FieldType.LONG,
-                            "Szerokosc", FieldType.LONG,
+                            "Szerokosc", FieldType.DOUBLE,
                             "Kolor", FieldType.STRING))
                     .dictionaries(Collections.singletonMap("Kolor", "KOLORY"))
                     .build());

@@ -13,14 +13,14 @@
                 <h1>Szablon grupy produktowej: <span th:text="${template.name}"/></h1>
                 <br />
                 <table class="table table-bordered">
-                    <tr>
+                    <tr style="font-weight: bold">
                         <td>Nazwa pola</td>
                         <td>Typ wartości</td>
                         <td>Wartość z kolekcji</td>
                     </tr>
                     <tr th:each="field: ${template.fields}">
                         <td th:text="${field.key}"></td>
-                        <td th:text="${field.value}"></td>
+                        <td th:text="${field.value.getLabel()}"></td>
                         <td th:text="${template.dictionaries.get(field.key)}"></td>
                     </tr>
                 </table>

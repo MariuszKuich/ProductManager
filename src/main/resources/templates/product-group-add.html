@@ -12,6 +12,17 @@
             <div class="col">
                 <h1>Dodawanie grupy produktowej</h1>
                 <br />
+                <form class="form-group" th:action="@{/product-group/add}" th:object="${template}" method="post">
+                    <div>
+                        <label>Nazwa grupy produktowej</label>
+                        <input type="text" th:field="*{name}" class="form-control" placeholder="Grupa produktowa" />
+                        <p class="text-danger" th:if="${#fields.hasErrors('name')}">
+                            Proszę wprowadzić poprawną nazwę grupy produktowej (2-30 znaków).
+                        </p>
+                    </div>
+                    <br />
+                    <input type="submit" value="Zatwierdź" class="btn btn-default" />
+                </form>
                 <a th:href="@{/product-group}">Powrót do listy grup produktowych</a>
             </div>
         </div>

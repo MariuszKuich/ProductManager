@@ -20,4 +20,16 @@ public class ProductTemplateService {
     public ProductTemplate getProductTemplateById(String templateId) {
         return productTemplateRepository.findById(templateId).orElseThrow();
     }
+
+    public ProductTemplate saveProductTemplate(ProductTemplate productTemplate) {
+        return productTemplateRepository.save(productTemplate);
+    }
+
+    public boolean productTemplateExists(String templateId) {
+        return productTemplateRepository.existsById(templateId);
+    }
+
+    public void deleteProductTemplate(String templateId) {
+        productTemplateRepository.deleteById(templateId);
+    }
 }
