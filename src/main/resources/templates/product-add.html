@@ -5,6 +5,30 @@
     <meta charset="UTF-8">
     <title>Dodawanie produktu</title>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <script type="text/javascript" th:inline="javascript">
+        let handlingResult;
+
+        function handleSubmit() {
+            handlingResult = true;
+            checkField("name", "nameWarn");
+            checkField("desc", "descWarn");
+            checkField("manuCode", "manuCodeWarn");
+            checkField("storeCode", "storeCodeWarn");
+
+            return handlingResult;
+        }
+
+        function checkField(fieldName, warnFieldName) {
+            let value = document.getElementById(fieldName).value;
+            if (value === "") {
+                document.getElementById(warnFieldName).style.visibility = "visible";
+                handlingResult = false;
+            }
+            else {
+                document.getElementById(warnFieldName).style.visibility = "hidden";
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -12,8 +36,50 @@
             <div class="col">
                 <h1>Dodawanie produktu</h1>
                 <br />
-                <p>Dodawanie produktu na podstawie szablonu o ID: <span th:text="${productTemplateId}"/></p>
+                <h5>Dodawanie produktu dla grupy produktowej: <span th:text="${templateName}"/></h5>
                 <br />
+                <form id="dataForm" onsubmit="return handleSubmit()" class="form-group" th:action="@{/product/add}" th:object="${product}" method="post">
+                    <div>
+                        <label>Nazwa produktu</label>
+                        <input id="name" type="text" th:field="*{name}" class="form-control" placeholder="Nazwa" />
+                        <p id="nameWarn" class="text-danger" style="visibility: hidden">
+                            Proszę wprowadzić nazwę produktu.
+                        </p>
+                    </div>
+                    <div>
+                        <label>Opis produktu</label>
+                        <textarea rows="4" cols="50" id="desc" form="dataForm" th:field="*{description}" class="form-control" placeholder="Opis"></textarea>
+                        <p id="descWarn" class="text-danger" style="visibility: hidden">
+                            Proszę wprowadzić opis produktu.
+                        </p>
+                    </div>
+                    <div>
+                        <label>Kod producenta</label>
+                        <input id="manuCode" type="text" th:field="*{manufacturerCode}" class="form-control" placeholder="Kod" />
+                        <p id="manuCodeWarn" class="text-danger" style="visibility: hidden">
+                            Proszę wprowadzić kod producenta.
+                        </p>
+                    </div>
+                    <div>
+                        <label>Kod sklepu</label>
+                        <input id="storeCode" type="text" th:field="*{storeCode}" class="form-control" placeholder="Kod" />
+                        <p id="storeCodeWarn" class="text-danger" style="visibility: hidden">
+                            Proszę wprowadzić kod sklepu.
+                        </p>
+                    </div>
+                    <div>
+                        <div th:each="property,iter : *{properties}">
+                            <label th:text="${property.label}"></label>
+                            <input type="text" class="form-control" th:if="${property.fieldType.name() == 'STRING'}" th:field="*{properties[__${iter.index}__].value}" />
+                            <input type="number" class="form-control" th:if="${property.fieldType.name() == 'LONG'}" th:field="*{properties[__${iter.index}__].value}" />
+                            <input type="number" th:step="0.000001" class="form-control" th:if="${property.fieldType.name() == 'DOUBLE'}" th:field="*{properties[__${iter.index}__].value}" >
+                            <p th:id="'prop' + ${iter.index}" class="text-danger" style="visibility: hidden">
+                                Proszę wprowadzić wartość.
+                            </p>
+                        </div>
+                    </div>
+                    <input type="submit" value="Zatwierdź" class="btn btn-default" />
+                </form>
                 <a th:href="@{/product-group}">Powrót do listy grup produktowych</a>
             </div>
         </div>
