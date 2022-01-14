@@ -2,7 +2,10 @@ package pl.mariuszk.productmanager.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.mariuszk.productmanager.enums.FieldType;
+import pl.mariuszk.productmanager.mapper.ProductTemplateMapper;
 import pl.mariuszk.productmanager.model.ProductTemplate;
+import pl.mariuszk.productmanager.model.frontend.ProductTemplateDto;
 import pl.mariuszk.productmanager.repository.ProductTemplateRepository;
 
 import java.util.List;
@@ -12,6 +15,7 @@ import java.util.List;
 public class ProductTemplateService {
 
     private final ProductTemplateRepository productTemplateRepository;
+    private final ProductTemplateMapper productTemplateMapper;
 
     public List<ProductTemplate> getAvailableProductsTemplates() {
         return productTemplateRepository.findAll();
@@ -21,8 +25,8 @@ public class ProductTemplateService {
         return productTemplateRepository.findById(templateId).orElseThrow();
     }
 
-    public ProductTemplate saveProductTemplate(ProductTemplate productTemplate) {
-        return productTemplateRepository.save(productTemplate);
+    public ProductTemplate saveProductTemplate(ProductTemplateDto productTemplateDto) {
+        return productTemplateRepository.save(productTemplateMapper.map(productTemplateDto));
     }
 
     public boolean productTemplateExists(String templateId) {
@@ -31,5 +35,9 @@ public class ProductTemplateService {
 
     public void deleteProductTemplate(String templateId) {
         productTemplateRepository.deleteById(templateId);
+    }
+
+    public FieldType[] getAvailableFieldTypesList() {
+        return FieldType.values();
     }
 }

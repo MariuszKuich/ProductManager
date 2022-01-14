@@ -5,6 +5,36 @@
     <meta charset="UTF-8">
     <title>Dodawanie grupy produktowej</title>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <script type="text/javascript">
+        function handleSubmit() {
+            let result = true;
+            let mainFieldName = document.getElementById("mainName").value;
+            if (mainFieldName == "") {
+                document.getElementById("mainNameWarn").style.visibility = "visible";
+                result = false;
+            }
+            else {
+                document.getElementById("mainNameWarn").style.visibility = "hidden";
+            }
+            let fieldName = document.getElementById("name0").value;
+            if (fieldName == "") {
+                document.getElementById("nameWarn0").style.visibility = "visible";
+                result = false;
+            }
+            else {
+                document.getElementById("nameWarn0").style.visibility = "hidden";
+            }
+            let fieldOption = document.getElementById("type0").value;
+            if (fieldOption == null) {
+                document.getElementById("typeWarn0").style.visibility = "visible";
+                result = false;
+            }
+            else {
+                document.getElementById("typeWarn0").style.visibility = "hidden";
+            }
+            return result;
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -12,13 +42,31 @@
             <div class="col">
                 <h1>Dodawanie grupy produktowej</h1>
                 <br />
-                <form class="form-group" th:action="@{/product-group/add}" th:object="${template}" method="post">
+                <form id="dataForm" onsubmit="return handleSubmit()" class="form-group" th:action="@{/product-group/add}" th:object="${templateDto}" method="post">
                     <div>
                         <label>Nazwa grupy produktowej</label>
-                        <input type="text" th:field="*{name}" class="form-control" placeholder="Grupa produktowa" />
-                        <p class="text-danger" th:if="${#fields.hasErrors('name')}">
-                            Proszę wprowadzić poprawną nazwę grupy produktowej (2-30 znaków).
+                        <input id="mainName" type="text" th:field="*{name}" class="form-control" placeholder="Grupa produktowa" />
+                        <p id="mainNameWarn" class="text-danger" style="visibility: hidden">
+                            Proszę wprowadzić nazwę grupy produktowej.
                         </p>
+                    </div>
+                    <div class="border border-primary" style="padding: 10px">
+                        <div>
+                            <label>Nazwa cechy</label>
+                            <input id="name0" type="text" th:field="*{fieldsNames[0]}" class="form-control" placeholder="Nazwa" />
+                            <p id="nameWarn0" class="text-danger" style="visibility: hidden">
+                                Proszę wprowadzić nazwę cechy.
+                            </p>
+                        </div>
+                        <div>
+                            <label>Typ cechy</label>
+                            <select id="type0" class="form-control" th:field="*{fieldTypes[0]}">
+                                <option th:each="fieldType : ${fieldTypes}" th:value="${fieldType.name()}" th:text="${fieldType.getLabel()}"></option>
+                            </select>
+                            <p id="typeWarn0" class="text-danger" style="visibility: hidden">
+                                Proszę wybrać typ cechy.
+                            </p>
+                        </div>
                     </div>
                     <br />
                     <input type="submit" value="Zatwierdź" class="btn btn-default" />

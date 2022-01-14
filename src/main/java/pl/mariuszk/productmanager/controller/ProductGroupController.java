@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.mariuszk.productmanager.model.ProductTemplate;
+import pl.mariuszk.productmanager.model.frontend.ProductTemplateDto;
 import pl.mariuszk.productmanager.service.ProductTemplateService;
 
 import javax.validation.Valid;
@@ -29,16 +29,17 @@ public class ProductGroupController {
 
     @GetMapping("/add")
     public String getProductGroupAddPage(Model model) {
-        model.addAttribute("template", new ProductTemplate());
+        model.addAttribute("templateDto", new ProductTemplateDto());
+        model.addAttribute("fieldTypes", productTemplateService.getAvailableFieldTypesList());
         return "product-group-add";
     }
 
     @PostMapping("/add")
-    public String addProductGroup(@ModelAttribute("template") @Valid ProductTemplate productTemplate, BindingResult bindingResult) {
+    public String addProductGroup(@ModelAttribute("template") @Valid ProductTemplateDto productTemplateDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "product-group-add";
         }
-        productTemplateService.saveProductTemplate(productTemplate);
+        productTemplateService.saveProductTemplate(productTemplateDto);
 
         return "redirect:/product-group";
     }

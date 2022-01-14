@@ -8,6 +8,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.mariuszk.productmanager.enums.FieldType;
 
+import javax.validation.constraints.NotBlank;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Map;
@@ -20,11 +22,11 @@ import java.util.Map;
 public class ProductTemplate {
     @Id
     private String id;
-    @NotNull
-    @Size(min=2, max=30)
+    @NotBlank
     private String name;
-    //TODO
-    //@Size(min=1)
+    @NotNull
+    @Size(min=1)
     private Map<String, FieldType> fields;
+    @NotNull
     private Map<String, String> dictionaries;
 }
