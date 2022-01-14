@@ -6,6 +6,8 @@
     <title>Dodawanie grupy produktowej</title>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
     <script type="text/javascript">
+        let attributesIndex = 1;
+
         function handleSubmit() {
             let result = true;
             let mainFieldName = document.getElementById("mainName").value;
@@ -33,6 +35,16 @@
                 document.getElementById("typeWarn0").style.visibility = "hidden";
             }
             return result;
+        }
+
+        function addAttributes() {
+            let container = document.getElementById("attributesContainer");
+            container.innerHTML += `<div class=\"border border-primary\" style=\"padding: 10px; margin-top: 10px;\" ><p>Attribute ${attributesIndex}</p></div>`;
+            attributesIndex = attributesIndex + 1;
+
+            if (attributesIndex > 3) {
+                document.getElementById("btnAddAttribute").disabled = true;
+            }
         }
     </script>
 </head>
@@ -68,7 +80,10 @@
                             </p>
                         </div>
                     </div>
+                    <div id="attributesContainer"></div>
                     <br />
+                    <button id="btnAddAttribute" type="button" class="btn btn-default" onclick="addAttributes()">+ Dodaj kolejną cechę</button>
+                    <br /><br />
                     <input type="submit" value="Zatwierdź" class="btn btn-default" />
                 </form>
                 <a th:href="@{/product-group}">Powrót do listy grup produktowych</a>
