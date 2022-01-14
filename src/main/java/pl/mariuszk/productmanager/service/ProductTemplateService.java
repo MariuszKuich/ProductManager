@@ -8,6 +8,7 @@ import pl.mariuszk.productmanager.model.ProductTemplate;
 import pl.mariuszk.productmanager.model.frontend.ProductTemplateDto;
 import pl.mariuszk.productmanager.repository.ProductTemplateRepository;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -37,7 +38,11 @@ public class ProductTemplateService {
         productTemplateRepository.deleteById(templateId);
     }
 
-    public FieldType[] getAvailableFieldTypesList() {
+    public FieldType[] getAvailableFieldsTypes() {
         return FieldType.values();
+    }
+
+    public String[] getAvailableFieldsLabels() {
+        return Arrays.stream(FieldType.values()).map(FieldType::getLabel).toArray(String[]::new);
     }
 }

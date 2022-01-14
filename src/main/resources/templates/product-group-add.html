@@ -5,44 +5,99 @@
     <meta charset="UTF-8">
     <title>Dodawanie grupy produktowej</title>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
-    <script type="text/javascript">
+    <script type="text/javascript" th:inline="javascript">
+        let attributesValues = [[${fieldTypes}]];
+        let attributesLabels = [[${fieldLabels}]];
+        let maxAttributesNumber = [[${maxAttributesNumber}]] - 1;
         let attributesIndex = 1;
+        let handlingResult;
+        let fieldsNamesArray;
 
         function handleSubmit() {
-            let result = true;
+            fieldsNamesArray = [];
+            handlingResult = true;
             let mainFieldName = document.getElementById("mainName").value;
-            if (mainFieldName == "") {
+            if (mainFieldName === "") {
                 document.getElementById("mainNameWarn").style.visibility = "visible";
-                result = false;
+                handlingResult = false;
             }
             else {
                 document.getElementById("mainNameWarn").style.visibility = "hidden";
             }
-            let fieldName = document.getElementById("name0").value;
-            if (fieldName == "") {
-                document.getElementById("nameWarn0").style.visibility = "visible";
-                result = false;
+
+            for (let i = 0; i < attributesIndex; i++) {
+                checkAttributesFields(i);
+            }
+
+            if (handlingResult === true && fieldsNamesArray.length > 0) {
+                checkFieldsNamesUniqueness();
+            }
+
+            return handlingResult;
+        }
+
+        function checkAttributesFields(index) {
+            let fieldName = document.getElementById(`name${index}`).value;
+            if (fieldName === "") {
+                document.getElementById(`nameWarn${index}`).style.visibility = "visible";
+                handlingResult = false;
             }
             else {
-                document.getElementById("nameWarn0").style.visibility = "hidden";
+                fieldsNamesArray.push(fieldName);
+                document.getElementById(`nameWarn${index}`).style.visibility = "hidden";
             }
-            let fieldOption = document.getElementById("type0").value;
-            if (fieldOption == null) {
-                document.getElementById("typeWarn0").style.visibility = "visible";
-                result = false;
+
+            let fieldOption = document.getElementById(`type${index}`).value;
+            if (fieldOption === null) {
+                document.getElementById(`typeWarn${index}`).style.visibility = "visible";
+                handlingResult = false;
             }
             else {
-                document.getElementById("typeWarn0").style.visibility = "hidden";
+                document.getElementById(`typeWarn${index}`).style.visibility = "hidden";
             }
-            return result;
+        }
+
+        function checkFieldsNamesUniqueness() {
+            let namesUnique = (new Set(fieldsNamesArray)).size === fieldsNamesArray.length;
+            if (namesUnique) {
+                document.getElementById("duplicatedKeysWarn").style.visibility = "hidden";
+            }
+            else {
+                document.getElementById("duplicatedKeysWarn").style.visibility = "visible";
+            }
+
+            handlingResult = namesUnique;
         }
 
         function addAttributes() {
+            let optionsString = "";
+            for (let i = 0; i < attributesValues.length; i++) {
+                let value = attributesValues[i];
+                let label = attributesLabels[i];
+                optionsString += `<option value="${value}">${label}</option>`;
+            }
+
             let container = document.getElementById("attributesContainer");
-            container.innerHTML += `<div class=\"border border-primary\" style=\"padding: 10px; margin-top: 10px;\" ><p>Attribute ${attributesIndex}</p></div>`;
+            let newContent = document.createElement('newAttribute');
+            newContent.innerHTML += `<div class="border border-primary" style="padding: 10px; margin-top: 10px">
+                <div>
+                    <label>Nazwa cechy</label>
+                    <input id="name${attributesIndex}" type="text" name="fieldsNames[${attributesIndex}]" class="form-control" placeholder="Nazwa"/>
+                    <p id="nameWarn${attributesIndex}" class="text-danger" style="visibility: hidden">Proszę wprowadzić nazwę cechy.</p>
+                </div>
+                <div>
+                    <label>Typ cechy</label>
+                    <select id="type${attributesIndex}" class="form-control" name="fieldTypes[${attributesIndex}]">
+                       ${optionsString}
+                    </select>
+                    <p id="typeWarn${attributesIndex}" class="text-danger" style="visibility: hidden">Proszę wybrać typ cechy.</p>
+                </div>
+            </div>`;
+            container.appendChild(newContent.firstChild);
+
             attributesIndex = attributesIndex + 1;
 
-            if (attributesIndex > 3) {
+            if (attributesIndex > maxAttributesNumber) {
                 document.getElementById("btnAddAttribute").disabled = true;
             }
         }
@@ -83,7 +138,10 @@
                     <div id="attributesContainer"></div>
                     <br />
                     <button id="btnAddAttribute" type="button" class="btn btn-default" onclick="addAttributes()">+ Dodaj kolejną cechę</button>
-                    <br /><br />
+                    <br />
+                    <p id="duplicatedKeysWarn" class="text-danger" style="visibility: hidden">
+                        Nazwy cech muszą być unikalne.
+                    </p>
                     <input type="submit" value="Zatwierdź" class="btn btn-default" />
                 </form>
                 <a th:href="@{/product-group}">Powrót do listy grup produktowych</a>
