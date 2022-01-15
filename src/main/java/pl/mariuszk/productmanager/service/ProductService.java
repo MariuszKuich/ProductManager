@@ -23,12 +23,20 @@ public class ProductService {
     private final ProductTemplateRepository productTemplateRepository;
     private final PropertyTypeFactory propertyTypeFactory;
 
+    public List<Product> getProductsByTemplateId(String templateId) {
+        return productRepository.findByTemplateId(templateId);
+    }
+
     public String saveProduct(Product product) {
         return productRepository.save(product).getId();
     }
 
     public void deleteProduct(String productId) {
         productRepository.deleteById(productId);
+    }
+
+    public void deleteProductsAssignedToTemplate(String templateId) {
+        productRepository.deleteByTemplateId(templateId);
     }
 
     public boolean productExists(String productId) {
@@ -40,6 +48,7 @@ public class ProductService {
                 productTemplateRepository.findById(templateId).orElseThrow(ProductTemplateNotFoundException::new);
         Product product = new Product();
         product.setProperties(fillPropertiesFromTemplate(productTemplate.getFields()));
+        product.setTemplateId(templateId);
         return  product;
     }
 

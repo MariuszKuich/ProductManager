@@ -3,22 +3,30 @@
 <html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
-    <title>Grupy produktowe</title>
+    <title>Lista produktów</title>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
 <body>
     <div class="container">
         <div class="row">
             <div class="col">
-                <h1>Grupy produktowe</h1>
+                <h1>Produkty z grupy: <span th:text="${templateName}"/></h1>
                 <br />
                 <table class="table table-bordered">
-                    <tr th:each="template: ${templates}">
-                        <td><a th:href="@{'/product-group/' + ${template.id} + '/describe'}" th:text="${template.name}" /></td>
-                        <td><a th:href="@{/product/add(productTemplateId=${template.id})}">Dodaj nowy produkt</a></td>
-                        <td><a th:href="@{/product/products-list(productTemplateId=${template.id})}">Wyświetl listę produktów</a></td>
+                    <tr style="font-weight: bold">
+                        <td>Nazwa</td>
+                        <td>Opis</td>
+                        <td>Kod producenta</td>
+                        <td>Kod sklepu</td>
+                        <td>Usuń</td>
+                    </tr>
+                    <tr th:each="product: ${products}">
+                        <td th:text="${product.name}"></td>
+                        <td th:text="${product.description}"></td>
+                        <td th:text="${product.manufacturerCode}"></td>
+                        <td th:text="${product.storeCode}"></td>
                         <td>
-                            <form th:action="@{'/product-group/' + ${template.id} + '/delete'}" method="post">
+                            <form th:with="baseLink = '/product/' + ${product.id} + '/delete'" th:action="@{${baseLink}(productTemplateId=${product.templateId})}" method="post">
                                 <button type="submit" class="btn btn-default btn-sm" style="width: 100%">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
@@ -29,8 +37,8 @@
                         </td>
                     </tr>
                 </table>
-
-                <a th:href="@{/product-group/add}">Dodaj nową grupę produktową</a>
+                <br />
+                <a th:href="@{/product-group}">Powrót do listy grup produktowych</a>
             </div>
         </div>
     </div>

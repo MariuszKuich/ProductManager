@@ -44,6 +44,7 @@
                 <h5>Dodawanie produktu dla grupy produktowej: <span th:text="${templateName}"/></h5>
                 <br />
                 <form id="dataForm" onsubmit="return handleSubmit()" class="form-group" th:action="@{/product/add}" th:object="${product}" method="post">
+                    <input type="hidden" th:field="*{templateId}" th:value="${product.templateId}" />
                     <div>
                         <label>Nazwa produktu</label>
                         <input id="name" type="text" th:field="*{name}" class="form-control" placeholder="Nazwa" />

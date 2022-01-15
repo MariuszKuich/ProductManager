@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.mariuszk.productmanager.config.ProductManagerConfig;
 import pl.mariuszk.productmanager.model.frontend.ProductTemplateDto;
+import pl.mariuszk.productmanager.service.ProductService;
 import pl.mariuszk.productmanager.service.ProductTemplateService;
 
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 public class ProductGroupController {
 
     private final ProductTemplateService productTemplateService;
+    private final ProductService productService;
 
     @GetMapping
     public String getProductGroupMainPage(Model model) {
@@ -57,6 +59,7 @@ public class ProductGroupController {
     public String deleteProductGroup(@PathVariable(name = "templateId") String templateId) {
         if (productTemplateService.productTemplateExists(templateId)) {
             productTemplateService.deleteProductTemplate(templateId);
+            productService.deleteProductsAssignedToTemplate(templateId);
         }
 
         return "redirect:/product-group";

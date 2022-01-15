@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,5 +54,24 @@ public class ProductController {
         model.addAttribute("productId", productId);
 
         return "product-created";
+    }
+
+    @GetMapping("/products-list")
+    public String getProductsListPage(@RequestParam("productTemplateId") String templateId, Model model) {
+        model.addAttribute("products", productService.getProductsByTemplateId(templateId));
+        model.addAttribute("templateName", productTemplateService.getProductTemplateById(templateId).getName());
+
+        return "products-list";
+    }
+
+    @PostMapping("/{productId}/delete")
+    public String deleteProduct(@PathVariable("productId") String productId, @RequestParam("productTemplateId") String templateId,
+                                RedirectAttributes redirectAttributes) {
+        if (productService.productExists(productId)) {
+            productService.deleteProduct(productId);
+        }
+
+        redirectAttributes.addAttribute("productTemplateId", templateId);
+        return "redirect:/product/products-list";
     }
 }
