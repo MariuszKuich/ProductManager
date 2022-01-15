@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pl-PL">
+<head>
+    <meta charset="UTF-8">
+    <title>Szczegóły produktu</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Dane produktu: <span th:text="${product.name}"/></h1>
+                <br />
+                <table class="table table-bordered">
+                    <tr>
+                        <td style="font-weight: bold">Opis</td>
+                        <td th:text="${product.description}"></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold">Kod producenta</td>
+                        <td th:text="${product.manufacturerCode}"></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold">Kod sklepu</td>
+                        <td th:text="${product.storeCode}"></td>
+                    </tr>
+                    <tr th:each="property: ${product.properties}">
+                        <td style="font-weight: bold" th:text="${property.label}"></td>
+                        <td th:text="${property.value}"></td>
+                    </tr>
+                </table>
+                <br />
+                <a th:href="@{/product/products-list(productTemplateId=${product.templateId})}">Powrót do listy produktów</a>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+</body>
+</html>

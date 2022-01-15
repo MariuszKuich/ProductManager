@@ -17,6 +17,7 @@ import pl.mariuszk.productmanager.service.ProductService;
 import pl.mariuszk.productmanager.service.ProductTemplateService;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RequestMapping("/product")
 @Controller
@@ -73,5 +74,22 @@ public class ProductController {
 
         redirectAttributes.addAttribute("productTemplateId", templateId);
         return "redirect:/product/products-list";
+    }
+
+    @GetMapping("/{productId}/details")
+    public String getProductDetails(@PathVariable("productId") String productId, @RequestParam("productTemplateId") String templateId,
+                                      Model model, RedirectAttributes redirectAttributes) {
+        Optional<Product> product = productService.getProductById(productId);
+
+        if (product.isPresent()) {
+            model.addAttribute("product", product.get());
+            model.addAttribute("productTemplateId", templateId);
+
+            return "product-details";
+        }
+        else {
+            redirectAttributes.addAttribute("productTemplateId", templateId);
+            return "redirect:/product/products-list";
+        }
     }
 }

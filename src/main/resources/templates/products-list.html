@@ -14,17 +14,15 @@
                 <br />
                 <table class="table table-bordered">
                     <tr style="font-weight: bold">
+                        <td>ID</td>
                         <td>Nazwa</td>
-                        <td>Opis</td>
-                        <td>Kod producenta</td>
-                        <td>Kod sklepu</td>
+                        <td>Szczegóły</td>
                         <td>Usuń</td>
                     </tr>
                     <tr th:each="product: ${products}">
+                        <td th:text="${product.id}"></td>
                         <td th:text="${product.name}"></td>
-                        <td th:text="${product.description}"></td>
-                        <td th:text="${product.manufacturerCode}"></td>
-                        <td th:text="${product.storeCode}"></td>
+                        <td><a th:with="baseLink = '/product/' + ${product.id} + '/details'" th:href="@{${baseLink}(productTemplateId=${product.templateId})}">Szczegóły</a></td>
                         <td>
                             <form th:with="baseLink = '/product/' + ${product.id} + '/delete'" th:action="@{${baseLink}(productTemplateId=${product.templateId})}" method="post">
                                 <button type="submit" class="btn btn-default btn-sm" style="width: 100%">

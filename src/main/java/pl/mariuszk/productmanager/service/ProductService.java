@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.mariuszk.productmanager.enums.FieldType;
 import pl.mariuszk.productmanager.exception.ProductTemplateNotFoundException;
-import pl.mariuszk.productmanager.factory.PropertyTypeFactory;
 import pl.mariuszk.productmanager.model.Product;
 import pl.mariuszk.productmanager.model.ProductTemplate;
 import pl.mariuszk.productmanager.model.Property;
@@ -13,6 +12,7 @@ import pl.mariuszk.productmanager.repository.ProductTemplateRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,7 +21,10 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductTemplateRepository productTemplateRepository;
-    private final PropertyTypeFactory propertyTypeFactory;
+
+    public Optional<Product> getProductById(String productId) {
+        return productRepository.findById(productId);
+    }
 
     public List<Product> getProductsByTemplateId(String templateId) {
         return productRepository.findByTemplateId(templateId);
