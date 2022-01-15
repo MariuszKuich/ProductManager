@@ -7,6 +7,7 @@
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
     <script type="text/javascript" th:inline="javascript">
         let handlingResult;
+        let propertiesCount = [[${propertiesCount}]];
 
         function handleSubmit() {
             handlingResult = true;
@@ -14,6 +15,10 @@
             checkField("desc", "descWarn");
             checkField("manuCode", "manuCodeWarn");
             checkField("storeCode", "storeCodeWarn");
+
+            for (let i = 0; i < propertiesCount; i++) {
+                checkField(`prop${i}`, `prop${i}Warn`);
+            }
 
             return handlingResult;
         }
@@ -70,10 +75,13 @@
                     <div>
                         <div th:each="property,iter : *{properties}">
                             <label th:text="${property.label}"></label>
-                            <input type="text" class="form-control" th:if="${property.fieldType.name() == 'STRING'}" th:field="*{properties[__${iter.index}__].value}" />
-                            <input type="number" class="form-control" th:if="${property.fieldType.name() == 'LONG'}" th:field="*{properties[__${iter.index}__].value}" />
-                            <input type="number" th:step="0.000001" class="form-control" th:if="${property.fieldType.name() == 'DOUBLE'}" th:field="*{properties[__${iter.index}__].value}" >
-                            <p th:id="'prop' + ${iter.index}" class="text-danger" style="visibility: hidden">
+                            <input type="hidden" th:field="*{properties[__${iter.index}__].id}" th:value="${property.id}" />
+                            <input type="hidden" th:field="*{properties[__${iter.index}__].label}" th:value="${property.label}" />
+                            <input type="hidden" th:field="*{properties[__${iter.index}__].fieldType}" th:value="${property.fieldType}" />
+                            <input th:id="'prop' + ${iter.index}" type="text" class="form-control" th:if="${property.fieldType.name() == 'STRING'}" th:field="*{properties[__${iter.index}__].value}" />
+                            <input th:id="'prop' + ${iter.index}" type="number" class="form-control" th:if="${property.fieldType.name() == 'LONG'}" th:field="*{properties[__${iter.index}__].value}" />
+                            <input th:id="'prop' + ${iter.index}" type="number" th:step="0.000001" class="form-control" th:if="${property.fieldType.name() == 'DOUBLE'}" th:field="*{properties[__${iter.index}__].value}" >
+                            <p th:id="'prop' + ${iter.index} + 'Warn'" class="text-danger" style="visibility: hidden">
                                 Proszę wprowadzić wartość.
                             </p>
                         </div>

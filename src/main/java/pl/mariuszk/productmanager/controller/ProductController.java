@@ -27,8 +27,10 @@ public class ProductController {
 
     @GetMapping("/add")
     public String getAddProductPage(@RequestParam String productTemplateId, Model model) throws ProductTemplateNotFoundException {
-        model.addAttribute("product", productService.prepareProductBasedOnTemplate(productTemplateId));
+        Product product = productService.prepareProductBasedOnTemplate(productTemplateId);
+        model.addAttribute("product", product);
         model.addAttribute("templateName", productTemplateService.getProductTemplateById(productTemplateId).getName());
+        model.addAttribute("propertiesCount", product.getProperties().size());
 
         return "product-add";
     }
