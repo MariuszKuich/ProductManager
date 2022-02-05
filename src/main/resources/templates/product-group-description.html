@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<html lang="pl-PL">
+<html xmlns:th="http://www.thymeleaf.org" lang="pl-PL">
 <head>
     <meta charset="UTF-8">
     <title>Szablon grupy produktowej</title>
@@ -24,8 +23,10 @@
                         <td th:text="${template.dictionaries.get(field.key)}"></td>
                     </tr>
                 </table>
-                <br />
                 <a th:href="@{/product-group}">Powrót do listy grup produktowych</a>
+                <form th:action="@{/logout}" method="post" style="margin-top: 40px; margin-bottom: 30px;">
+                    <input class="btn btn-info" type="submit" value="Wyloguj się"/>
+                </form>
             </div>
         </div>
     </div>

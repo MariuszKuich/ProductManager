@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl-PL">
+<head>
+    <title>Logowanie</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+    <h1 class="d-flex justify-content-center">Product Manager</h1>
+    <h3 class="d-flex justify-content-center">Logowanie</h3>
+    <br />
+    <form th:action="@{/login}" method="post">
+        <div class="d-flex justify-content-center">
+            <label for="uname">Nazwa użytkownika</label>
+        </div>
+        <div class="d-flex justify-content-center">
+            <input id="uname" type="text" name="username"/>
+        </div>
+        <div class="d-flex justify-content-center" style="margin-top: 15px;">
+            <label for="upass">Hasło</label>
+        </div>
+        <div class="d-flex justify-content-center">
+            <input id="upass" type="password" name="password"/>
+        </div>
+        <div class="d-flex justify-content-center" style="margin-top: 15px;">
+            <input class="btn btn-primary" type="submit" value="Zaloguj się"/>
+        </div>
+    </form>
+    <br />
+    <div style="color: red" class="d-flex justify-content-center" th:if="${param.error}">
+        Niepoprawna nazwa użytkownika lub hasło.
+    </div>
+    <div style="color: green" class="d-flex justify-content-center" th:if="${param.logout}">
+        Wylogowano poprawnie.
+    </div>
+
+    <script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+</body>
+</html>
