@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.mariuszk.productmanager.exception.DictionaryNotFoundException;
 import pl.mariuszk.productmanager.exception.ProductTemplateNotFoundException;
 import pl.mariuszk.productmanager.model.Product;
 import pl.mariuszk.productmanager.service.ProductService;
@@ -28,9 +29,10 @@ public class ProductController {
     private final ProductTemplateService productTemplateService;
 
     @GetMapping("/add")
-    public String getAddProductPage(@RequestParam String productTemplateId, Model model) throws ProductTemplateNotFoundException {
+    public String getAddProductPage(@RequestParam String productTemplateId, Model model) throws ProductTemplateNotFoundException, DictionaryNotFoundException {
         Product product = productService.prepareProductBasedOnTemplate(productTemplateId);
         model.addAttribute("product", product);
+        model.addAttribute("dictionariesValues", productTemplateService.getDictionariesValuesForFields(productTemplateId));
         model.addAttribute("templateName", productTemplateService.getProductTemplateById(productTemplateId).getName());
         model.addAttribute("propertiesCount", product.getProperties().size());
 

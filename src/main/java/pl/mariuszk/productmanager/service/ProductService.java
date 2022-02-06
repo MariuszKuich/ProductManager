@@ -8,7 +8,6 @@ import pl.mariuszk.productmanager.model.Product;
 import pl.mariuszk.productmanager.model.ProductTemplate;
 import pl.mariuszk.productmanager.model.Property;
 import pl.mariuszk.productmanager.repository.ProductRepository;
-import pl.mariuszk.productmanager.repository.ProductTemplateRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductTemplateRepository productTemplateRepository;
+    private final ProductTemplateService productTemplateService;
 
     public Optional<Product> getProductById(String productId) {
         return productRepository.findById(productId);
@@ -47,8 +46,7 @@ public class ProductService {
     }
 
     public Product prepareProductBasedOnTemplate(String templateId) throws ProductTemplateNotFoundException {
-        ProductTemplate productTemplate =
-                productTemplateRepository.findById(templateId).orElseThrow(ProductTemplateNotFoundException::new);
+        ProductTemplate productTemplate = productTemplateService.getProductTemplateById(templateId);
         Product product = new Product();
         product.setProperties(fillPropertiesFromTemplate(productTemplate.getFields()));
         product.setTemplateId(templateId);

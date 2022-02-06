@@ -30,7 +30,7 @@ public class ProductManagerApplication {
                             "Dlugosc", FieldType.LONG,
                             "Wysokosc", FieldType.LONG,
                             "Szerokosc", FieldType.DOUBLE,
-                            "Kolor", FieldType.STRING))
+                            "Kolor", FieldType.STRING_D))
                     .dictionaries(Collections.singletonMap("Kolor", "KOLORY"))
                     .build());
             tryAddTemplate(templateRepository, ProductTemplate.builder()
@@ -38,7 +38,7 @@ public class ProductManagerApplication {
                     .fields(Map.of(
                             "Pojemnosc dysku twardego", FieldType.STRING,
                             "Typ konsoli", FieldType.STRING,
-                            "Kolor", FieldType.STRING))
+                            "Kolor", FieldType.STRING_D))
                     .dictionaries(Collections.singletonMap("Kolor", "KOLORY"))
                     .build());
 

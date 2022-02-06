@@ -3,6 +3,7 @@ package pl.mariuszk.productmanager.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.mariuszk.productmanager.enums.FieldType;
+import pl.mariuszk.productmanager.exception.DictionaryNotFoundException;
 import pl.mariuszk.productmanager.exception.ProductTemplateNotFoundException;
 import pl.mariuszk.productmanager.mapper.ProductTemplateMapper;
 import pl.mariuszk.productmanager.model.ProductTemplate;
@@ -13,7 +14,9 @@ import pl.mariuszk.productmanager.model.rest.ProductTemplateBriefDto;
 import pl.mariuszk.productmanager.repository.ProductTemplateRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static pl.mariuszk.productmanager.config.ProductManagerConfig.DICTIONARY_LABEL_PREFIX;
@@ -67,5 +70,17 @@ public class ProductTemplateService {
 
     public List<ProductTemplateBriefDto> getAvailableProductTemplatesSummary() {
         return productTemplateRepository.findAllBrief();
+    }
+
+    public Map<String, List<String>> getDictionariesValuesForFields(String templateId) throws ProductTemplateNotFoundException, DictionaryNotFoundException {
+        ProductTemplate productTemplate = productTemplateRepository.findById(templateId).orElseThrow(ProductTemplateNotFoundException::new);
+
+        Map<String, List<String>> dictionariesValuesForFields = new HashMap<>();
+        for (String templateDictionaryKey : productTemplate.getDictionaries().keySet()) {
+            dictionariesValuesForFields.put(templateDictionaryKey,
+                    dictionaryService.getDictionaryByName(productTemplate.getDictionaries().get(templateDictionaryKey)).getValues());
+        }
+
+        return dictionariesValuesForFields;
     }
 }

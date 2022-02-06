@@ -81,6 +81,9 @@
                             <input th:id="'prop' + ${iter.index}" type="text" class="form-control" th:if="${property.fieldType.name() == 'STRING'}" th:field="*{properties[__${iter.index}__].value}" />
                             <input th:id="'prop' + ${iter.index}" type="number" class="form-control" th:if="${property.fieldType.name() == 'LONG'}" th:field="*{properties[__${iter.index}__].value}" />
                             <input th:id="'prop' + ${iter.index}" type="number" th:step="0.000001" class="form-control" th:if="${property.fieldType.name() == 'DOUBLE'}" th:field="*{properties[__${iter.index}__].value}" >
+                            <select th:id="'prop' + ${iter.index}" class="form-control" th:if="${property.fieldType.name() == 'STRING_D'}" th:field="*{properties[__${iter.index}__].value}">
+                                <option th:each="value : ${dictionariesValues[__${property.getLabel()}__]}" th:value="${value}" th:text="${value}"></option>
+                            </select>
                             <p th:id="'prop' + ${iter.index} + 'Warn'" class="text-danger" style="visibility: hidden">
                                 Proszę wprowadzić wartość.
                             </p>
