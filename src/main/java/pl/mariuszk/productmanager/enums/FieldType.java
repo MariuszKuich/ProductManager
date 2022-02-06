@@ -1,6 +1,7 @@
 package pl.mariuszk.productmanager.enums;
 
 public enum FieldType {
+    STRING_D("Napis (słownik)"),
     STRING("Napis"),
     LONG("Liczba całkowita"),
     DOUBLE("Liczba zmiennoprzecinkowa");

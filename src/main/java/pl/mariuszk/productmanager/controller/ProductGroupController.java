@@ -34,8 +34,7 @@ public class ProductGroupController {
     @GetMapping("/add")
     public String getProductGroupAddPage(Model model) {
         model.addAttribute("templateDto", new ProductTemplateDto());
-        model.addAttribute("fieldTypes", productTemplateService.getAvailableFieldsTypes());
-        model.addAttribute("fieldLabels", productTemplateService.getAvailableFieldsLabels());
+        model.addAttribute("fieldTypes", productTemplateService.getAvailableFieldTypes());
         model.addAttribute("maxAttributesNumber", ProductManagerConfig.MAX_ATTRIBUTES_SIZE);
         return "product-group-add";
     }

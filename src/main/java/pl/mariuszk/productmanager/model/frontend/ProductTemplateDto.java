@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import pl.mariuszk.productmanager.config.ProductManagerConfig;
-import pl.mariuszk.productmanager.enums.FieldType;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,10 +20,10 @@ public class ProductTemplateDto {
     private String[] fieldsNames;
     @NotNull
     @Size(min=1)
-    private FieldType[] fieldTypes;
+    private String[] fieldTypes;
 
     public ProductTemplateDto() {
         this.fieldsNames = new String[ProductManagerConfig.MAX_ATTRIBUTES_SIZE];
-        this.fieldTypes = new FieldType[ProductManagerConfig.MAX_ATTRIBUTES_SIZE];
+        this.fieldTypes = new String[ProductManagerConfig.MAX_ATTRIBUTES_SIZE];
     }
 }

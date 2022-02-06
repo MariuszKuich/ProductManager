@@ -9,28 +9,52 @@ import pl.mariuszk.productmanager.model.frontend.ProductTemplateDto;
 import java.util.HashMap;
 import java.util.Map;
 
+import static pl.mariuszk.productmanager.config.ProductManagerConfig.DICTIONARY_LABEL_PREFIX;
+
 @Service
 public class ProductTemplateMapper {
 
     public ProductTemplate map(ProductTemplateDto productTemplateDto) {
         ProductTemplate productTemplate = new ProductTemplate();
         productTemplate.setName(productTemplateDto.getName());
-        productTemplate.setFields(getFieldsMap(productTemplateDto.getFieldsNames(), productTemplateDto.getFieldTypes()));
-        productTemplate.setDictionaries(new HashMap<>());
 
-        return  productTemplate;
+        ProductTemplateFieldsDictionaries productTemplateFieldsDictionaries =
+                getFieldsAndDictionariesFromDto(productTemplateDto.getFieldsNames(), productTemplateDto.getFieldTypes());
+
+        productTemplate.setFields(productTemplateFieldsDictionaries.fieldsMap);
+        productTemplate.setDictionaries(productTemplateFieldsDictionaries.dictionariesMap);
+
+        return productTemplate;
     }
 
-    private Map<String, FieldType> getFieldsMap(String[] fieldsNames, FieldType[] fieldTypes) {
+    private ProductTemplateFieldsDictionaries getFieldsAndDictionariesFromDto(String[] fieldsNames, String[] fieldTypes) {
         Map<String, FieldType> fieldsMap = new HashMap<>();
+        Map<String, String> dictionariesMap = new HashMap<>();
 
         for (int i = 0; i < ProductManagerConfig.MAX_ATTRIBUTES_SIZE ; i++) {
             if (fieldsNames[i] == null ) {
                 break;
             }
-            fieldsMap.put(fieldsNames[i], fieldTypes[i]);
+
+            if (fieldTypes[i].contains(DICTIONARY_LABEL_PREFIX)) {
+                fieldsMap.put(fieldsNames[i], FieldType.STRING_D);
+                dictionariesMap.put(fieldsNames[i], fieldTypes[i].replace(DICTIONARY_LABEL_PREFIX, ""));
+            }
+            else {
+                fieldsMap.put(fieldsNames[i], FieldType.valueOf(fieldTypes[i]));
+            }
         }
 
-        return fieldsMap;
+        return new ProductTemplateFieldsDictionaries(fieldsMap, dictionariesMap);
+    }
+
+    private static class ProductTemplateFieldsDictionaries {
+        private final Map<String, FieldType> fieldsMap;
+        private final Map<String, String> dictionariesMap;
+
+        ProductTemplateFieldsDictionaries(Map<String, FieldType> fieldsMap, Map<String, String> dictionariesMap) {
+            this.fieldsMap = fieldsMap;
+            this.dictionariesMap = dictionariesMap;
+        }
     }
 }

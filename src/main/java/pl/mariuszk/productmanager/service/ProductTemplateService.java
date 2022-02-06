@@ -6,12 +6,17 @@ import pl.mariuszk.productmanager.enums.FieldType;
 import pl.mariuszk.productmanager.exception.ProductTemplateNotFoundException;
 import pl.mariuszk.productmanager.mapper.ProductTemplateMapper;
 import pl.mariuszk.productmanager.model.ProductTemplate;
+import pl.mariuszk.productmanager.model.frontend.FieldTypeDto;
 import pl.mariuszk.productmanager.model.frontend.ProductTemplateDto;
+import pl.mariuszk.productmanager.model.rest.Dictionary;
 import pl.mariuszk.productmanager.model.rest.ProductTemplateBriefDto;
 import pl.mariuszk.productmanager.repository.ProductTemplateRepository;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static pl.mariuszk.productmanager.config.ProductManagerConfig.DICTIONARY_LABEL_PREFIX;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +24,7 @@ public class ProductTemplateService {
 
     private final ProductTemplateRepository productTemplateRepository;
     private final ProductTemplateMapper productTemplateMapper;
+    private final DictionaryService dictionaryService;
 
     public List<ProductTemplate> getAvailableProductsTemplates() {
         return productTemplateRepository.findAll();
@@ -40,12 +46,23 @@ public class ProductTemplateService {
         productTemplateRepository.deleteById(templateId);
     }
 
-    public FieldType[] getAvailableFieldsTypes() {
-        return FieldType.values();
-    }
+    public FieldTypeDto[] getAvailableFieldTypes() {
+        List<Dictionary> dictionaries =  dictionaryService.getAllDictionaries();
 
-    public String[] getAvailableFieldsLabels() {
-        return Arrays.stream(FieldType.values()).map(FieldType::getLabel).toArray(String[]::new);
+        List<FieldTypeDto> fieldTypeDtos = new ArrayList<>();
+        fieldTypeDtos.add(FieldTypeDto.builder().value(FieldType.STRING.name()).label(FieldType.STRING.getLabel()).build());
+        fieldTypeDtos.add(FieldTypeDto.builder().value(FieldType.LONG.name()).label(FieldType.LONG.getLabel()).build());
+        fieldTypeDtos.add(FieldTypeDto.builder().value(FieldType.DOUBLE.name()).label(FieldType.DOUBLE.getLabel()).build());
+        fieldTypeDtos.addAll(
+                dictionaries.stream().map(d ->
+                        FieldTypeDto.builder()
+                                .value(DICTIONARY_LABEL_PREFIX + d.getName())
+                                .label(DICTIONARY_LABEL_PREFIX + d.getName())
+                                .build())
+                .collect(Collectors.toList())
+        );
+
+        return fieldTypeDtos.toArray(FieldTypeDto[]::new);
     }
 
     public List<ProductTemplateBriefDto> getAvailableProductTemplatesSummary() {

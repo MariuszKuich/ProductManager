@@ -6,9 +6,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import pl.mariuszk.productmanager.enums.FieldType;
 import pl.mariuszk.productmanager.model.ProductTemplate;
+import pl.mariuszk.productmanager.model.rest.Dictionary;
+import pl.mariuszk.productmanager.repository.DictionaryRepository;
 import pl.mariuszk.productmanager.repository.ProductTemplateRepository;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @SpringBootApplication
@@ -19,9 +22,9 @@ public class ProductManagerApplication {
     }
 
     @Bean
-    CommandLineRunner run(ProductTemplateRepository repository) {
+    CommandLineRunner run(ProductTemplateRepository templateRepository, DictionaryRepository dictionaryRepository) {
         return args -> {
-            tryAddTemplate(repository, ProductTemplate.builder()
+            tryAddTemplate(templateRepository, ProductTemplate.builder()
                     .name("Meble")
                     .fields(Map.of(
                             "Dlugosc", FieldType.LONG,
@@ -30,13 +33,22 @@ public class ProductManagerApplication {
                             "Kolor", FieldType.STRING))
                     .dictionaries(Collections.singletonMap("Kolor", "KOLORY"))
                     .build());
-            tryAddTemplate(repository, ProductTemplate.builder()
+            tryAddTemplate(templateRepository, ProductTemplate.builder()
                     .name("Konsole")
                     .fields(Map.of(
                             "Pojemnosc dysku twardego", FieldType.STRING,
                             "Typ konsoli", FieldType.STRING,
                             "Kolor", FieldType.STRING))
                     .dictionaries(Collections.singletonMap("Kolor", "KOLORY"))
+                    .build());
+
+            tryAddDictionary(dictionaryRepository, Dictionary.builder()
+                    .name("KOLORY")
+                    .values(List.of("Czerwony", "Niebieski", "Zielony", "Czarny"))
+                    .build());
+            tryAddDictionary(dictionaryRepository, Dictionary.builder()
+                    .name("ROZMIARY")
+                    .values(List.of("XS", "S", "M", "L", "XL"))
                     .build());
         };
     }
@@ -45,9 +57,17 @@ public class ProductManagerApplication {
         repository.findProductTemplateByName(template.getName()).ifPresentOrElse(g -> {
             System.out.println("Podany szablon został już zapisany.");
         }, () -> {
-            ProductTemplate savedTemplate = repository.save(template);
-            ProductTemplate retrievedTemplate = repository.findById(savedTemplate.getId()).get();
-            System.out.println(retrievedTemplate);
+            repository.save(template);
+            System.out.println("Zapisano szablon " + template.getName());
+        });
+    }
+
+    private void tryAddDictionary(DictionaryRepository repository, Dictionary dictionary) {
+        repository.findDictionaryByName(dictionary.getName()).ifPresentOrElse(g -> {
+            System.out.println("Podany słownik został już zapisany.");
+        }, () -> {
+            repository.save(dictionary);
+            System.out.println("Zapisano słownik " + dictionary.getName());
         });
     }
 }

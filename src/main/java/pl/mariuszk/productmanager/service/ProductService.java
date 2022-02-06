@@ -52,7 +52,7 @@ public class ProductService {
         Product product = new Product();
         product.setProperties(fillPropertiesFromTemplate(productTemplate.getFields()));
         product.setTemplateId(templateId);
-        return  product;
+        return product;
     }
 
     private List<Property> fillPropertiesFromTemplate(Map<String, FieldType> templateFields)  {

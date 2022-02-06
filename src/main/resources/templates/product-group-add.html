@@ -6,7 +6,6 @@
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
     <script type="text/javascript" th:inline="javascript">
         let attributesValues = [[${fieldTypes}]];
-        let attributesLabels = [[${fieldLabels}]];
         let maxAttributesNumber = [[${maxAttributesNumber}]] - 1;
         let attributesIndex = 1;
         let handlingResult;
@@ -71,8 +70,9 @@
         function addAttributes() {
             let optionsString = "";
             for (let i = 0; i < attributesValues.length; i++) {
-                let value = attributesValues[i];
-                let label = attributesLabels[i];
+                let attribute = attributesValues[i];
+                let value = attribute['value'];
+                let label = attribute['label'];
                 optionsString += `<option value="${value}">${label}</option>`;
             }
 
@@ -127,7 +127,7 @@
                         <div>
                             <label>Typ cechy</label>
                             <select id="type0" class="form-control" th:field="*{fieldTypes[0]}">
-                                <option th:each="fieldType : ${fieldTypes}" th:value="${fieldType.name()}" th:text="${fieldType.getLabel()}"></option>
+                                <option th:each="fieldType : ${fieldTypes}" th:value="${fieldType.getValue()}" th:text="${fieldType.getLabel()}"></option>
                             </select>
                             <p id="typeWarn0" class="text-danger" style="visibility: hidden">
                                 Proszę wybrać typ cechy.
