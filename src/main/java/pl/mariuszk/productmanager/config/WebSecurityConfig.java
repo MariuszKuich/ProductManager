@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("markui000").password(encoderConfig.passwordEncoder().encode("a")).roles("USER")
+                .withUser("a").password(encoderConfig.passwordEncoder().encode("a")).roles("USER")
                 .and()
                 .withUser("andjur001").password(encoderConfig.passwordEncoder().encode("3ypDTV")).roles("USER")
                 .and()
