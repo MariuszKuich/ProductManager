@@ -26,8 +26,8 @@ public class ProductService {
         return productRepository.findById(productId);
     }
 
-    public List<Product> getProductsByTemplateId(String templateId) {
-        return productRepository.findByTemplateId(templateId);
+    public List<Product> getProductsByTemplateId(String templateId) throws ProductTemplateNotFoundException {
+        return productRepository.findByTemplateId(templateId).orElseThrow(ProductTemplateNotFoundException::new);
     }
 
     public String saveProduct(Product product) {

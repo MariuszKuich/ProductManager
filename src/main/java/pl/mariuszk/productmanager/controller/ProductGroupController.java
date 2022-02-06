@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.mariuszk.productmanager.config.ProductManagerConfig;
+import pl.mariuszk.productmanager.exception.ProductTemplateNotFoundException;
 import pl.mariuszk.productmanager.model.frontend.ProductTemplateDto;
 import pl.mariuszk.productmanager.service.ProductService;
 import pl.mariuszk.productmanager.service.ProductTemplateService;
@@ -50,7 +51,7 @@ public class ProductGroupController {
     }
 
     @GetMapping("/{templateId}/describe")
-    public String getTemplateInfoPage(@PathVariable(name = "templateId") String templateId, Model model) {
+    public String getTemplateInfoPage(@PathVariable(name = "templateId") String templateId, Model model) throws ProductTemplateNotFoundException {
         model.addAttribute("template", productTemplateService.getProductTemplateById(templateId));
         return "product-group-description";
     }

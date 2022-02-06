@@ -25,6 +25,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .authorizeHttpRequests()
+                    .antMatchers("/api/**", "/swagger-ui", "/swagger-ui.html")
+                    .hasRole("DEV")
+                .and()
+                .httpBasic()
+                .and()
                 .authorizeRequests()
                     .anyRequest()
                     .authenticated()
@@ -40,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("a").password(encoderConfig.passwordEncoder().encode("a")).roles("USER")
+                .withUser("a").password(encoderConfig.passwordEncoder().encode("a")).roles("DEV")
                 .and()
                 .withUser("andjur001").password(encoderConfig.passwordEncoder().encode("3ypDTV")).roles("USER")
                 .and()

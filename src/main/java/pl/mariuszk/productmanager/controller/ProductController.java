@@ -58,7 +58,7 @@ public class ProductController {
     }
 
     @GetMapping("/products-list")
-    public String getProductsListPage(@RequestParam("productTemplateId") String templateId, Model model) {
+    public String getProductsListPage(@RequestParam("productTemplateId") String templateId, Model model) throws ProductTemplateNotFoundException {
         model.addAttribute("products", productService.getProductsByTemplateId(templateId));
         model.addAttribute("templateName", productTemplateService.getProductTemplateById(templateId).getName());
 

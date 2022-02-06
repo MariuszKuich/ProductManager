@@ -3,9 +3,11 @@ package pl.mariuszk.productmanager.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.mariuszk.productmanager.enums.FieldType;
+import pl.mariuszk.productmanager.exception.ProductTemplateNotFoundException;
 import pl.mariuszk.productmanager.mapper.ProductTemplateMapper;
 import pl.mariuszk.productmanager.model.ProductTemplate;
 import pl.mariuszk.productmanager.model.frontend.ProductTemplateDto;
+import pl.mariuszk.productmanager.model.rest.ProductTemplateBriefDto;
 import pl.mariuszk.productmanager.repository.ProductTemplateRepository;
 
 import java.util.Arrays;
@@ -22,8 +24,8 @@ public class ProductTemplateService {
         return productTemplateRepository.findAll();
     }
 
-    public ProductTemplate getProductTemplateById(String templateId) {
-        return productTemplateRepository.findById(templateId).orElseThrow();
+    public ProductTemplate getProductTemplateById(String templateId) throws ProductTemplateNotFoundException {
+        return productTemplateRepository.findById(templateId).orElseThrow(ProductTemplateNotFoundException::new);
     }
 
     public ProductTemplate saveProductTemplate(ProductTemplateDto productTemplateDto) {
@@ -44,5 +46,9 @@ public class ProductTemplateService {
 
     public String[] getAvailableFieldsLabels() {
         return Arrays.stream(FieldType.values()).map(FieldType::getLabel).toArray(String[]::new);
+    }
+
+    public List<ProductTemplateBriefDto> getAvailableProductTemplatesSummary() {
+        return productTemplateRepository.findAllBrief();
     }
 }
