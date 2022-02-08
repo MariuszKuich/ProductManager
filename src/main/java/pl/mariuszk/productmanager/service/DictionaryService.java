@@ -3,6 +3,7 @@ package pl.mariuszk.productmanager.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.mariuszk.productmanager.exception.DictionaryNotFoundException;
+import pl.mariuszk.productmanager.model.frontend.DictionaryDto;
 import pl.mariuszk.productmanager.model.rest.Dictionary;
 import pl.mariuszk.productmanager.repository.DictionaryRepository;
 
@@ -16,6 +17,10 @@ public class DictionaryService {
 
     public List<Dictionary> getAllDictionaries() {
         return dictionaryRepository.findAll();
+    }
+
+    public List<DictionaryDto> getAllDictionariesDto() {
+        return dictionaryRepository.findAllDictionariesDto();
     }
 
     public Dictionary getDictionaryByName(String name) throws DictionaryNotFoundException {

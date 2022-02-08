@@ -9,7 +9,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h1>Grupy produktowe</h1>
+                <h1 style="margin-top: 10px;">Grupy produktowe</h1>
                 <br />
                 <table class="table table-bordered">
                     <tr th:each="template: ${templates}">
@@ -32,6 +32,10 @@
                 </table>
 
                 <a th:href="@{/product-group/add}">Dodaj nową grupę produktową</a>
+                <br /> <br/>
+                <a th:href="@{/dictionary/list}">
+                    <button type="button" class="btn btn-secondary" style="width: 107px">Słowniki</button>
+                </a>
                 <form th:action="@{/logout}" method="post" style="margin-top: 40px; margin-bottom: 30px;">
                     <input class="btn btn-info" type="submit" value="Wyloguj się"/>
                 </form>

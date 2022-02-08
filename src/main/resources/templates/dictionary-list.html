@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl-PL">
+<head>
+    <meta charset="UTF-8">
+    <title>Słowniki</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1 style="margin-top: 10px;">Słowniki</h1>
+            <br />
+            <table class="table table-bordered">
+                <tr th:each="dictionary: ${dictionaries}">
+                    <td><a th:href="@{'/dictionary/' + ${dictionary.id} + '/describe'}" th:text="${dictionary.name}" /></td>
+                    <td>
+                        <a th:href="@{/dictionary/edit(dictionaryId=${dictionary.id})}">
+                            <button type="button" class="btn btn-default btn-sm" style="width: 100%;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hammer" viewBox="0 0 16 16">
+                                    <path d="M9.972 2.508a.5.5 0 0 0-.16-.556l-.178-.129a5.009 5.009 0 0 0-2.076-.783C6.215.862 4.504 1.229 2.84 3.133H1.786a.5.5 0 0 0-.354.147L.146 4.567a.5.5 0 0 0 0 .706l2.571 2.579a.5.5 0 0 0 .708 0l1.286-1.29a.5.5 0 0 0 .146-.353V5.57l8.387 8.873A.5.5 0 0 0 14 14.5l1.5-1.5a.5.5 0 0 0 .017-.689l-9.129-8.63c.747-.456 1.772-.839 3.112-.839a.5.5 0 0 0 .472-.334z"/>
+                                </svg> Dodaj pozycje
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+
+            <a th:href="@{/dictionary/add}">
+                <button type="button" class="btn btn-secondary">Dodaj nowy słownik</button>
+            </a>
+            <br />
+            <div style="margin-top: 9px;">
+                <a th:href="@{/product-group}">Powrót do listy grup produktowych</a>
+            </div>
+            <form th:action="@{/logout}" method="post" style="margin-top: 40px; margin-bottom: 30px;">
+                <input class="btn btn-info" type="submit" value="Wyloguj się"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+</body>
+</html>
