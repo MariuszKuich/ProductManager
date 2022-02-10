@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl-PL">
+<head>
+    <meta charset="UTF-8">
+    <title>Szczegóły słownika</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1 style="margin-top: 10px;">Pozycje słownika: <span th:text="${dictionary.name}"/></h1>
+                <br />
+                <ul class="list-group">
+                    <li class="list-group-item" th:each="elem:${dictionary.values}" th:text="${elem}"></li>
+                </ul>
+                <br />
+                <a th:href="@{/dictionary/list}">Powrót do listy słowników</a>
+                <form th:action="@{/logout}" method="post" style="margin-top: 40px; margin-bottom: 30px;">
+                    <input class="btn btn-info" type="submit" value="Wyloguj się"/>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+</body>
+</html>

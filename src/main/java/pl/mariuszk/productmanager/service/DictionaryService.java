@@ -26,4 +26,8 @@ public class DictionaryService {
     public Dictionary getDictionaryByName(String name) throws DictionaryNotFoundException {
         return dictionaryRepository.findDictionaryByName(name).orElseThrow(DictionaryNotFoundException::new);
     }
+
+    public Dictionary getDictionaryById(String id) throws DictionaryNotFoundException {
+        return dictionaryRepository.findById(id).orElseThrow(DictionaryNotFoundException::new);
+    }
 }
