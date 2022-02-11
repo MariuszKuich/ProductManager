@@ -6,12 +6,14 @@
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
     <script type="text/javascript" th:inline="javascript">
         let maxElementsNumber = [[${maxDictionaryElementsNumber}]] - 1;
+        let existingDictionariesNames = [[${existingDictionaries}]];
         let fieldsNamesArray;
         let elementsIndex = 1;
         let handlingResult;
 
         function handleSubmit() {
             document.getElementById("duplicatedElementsWarn").style.visibility = "hidden";
+            document.getElementById("dictionaryNameAlreadyExistsWarn").style.visibility = "hidden";
 
             fieldsNamesArray = [];
             handlingResult = true;
@@ -21,6 +23,7 @@
                 handlingResult = false;
             }
             else {
+                checkDictionaryNameUniqueness(mainFieldName);
                 document.getElementById("mainNameWarn").style.visibility = "hidden";
             }
 
@@ -54,6 +57,15 @@
             }
 
             handlingResult = namesUnique;
+        }
+
+        function checkDictionaryNameUniqueness(mainFieldName) {
+            if (existingDictionariesNames.some(element => {
+                return element.toLowerCase() === mainFieldName.toLowerCase();
+            })) {
+                document.getElementById("dictionaryNameAlreadyExistsWarn").style.visibility = "visible";
+                handlingResult = false;
+            }
         }
 
         function addElements() {
@@ -105,6 +117,9 @@
                 <br />
                 <p id="duplicatedElementsWarn" class="text-danger" style="visibility: hidden">
                     Nazwy pozycji muszą być unikalne.
+                </p>
+                <p id="dictionaryNameAlreadyExistsWarn" class="text-danger" style="visibility: hidden">
+                    Słownik o podanej nazwie istnieje już w systemie.
                 </p>
                 <input type="submit" value="Zatwierdź" class="btn btn-default" />
             </form>

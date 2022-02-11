@@ -30,6 +30,10 @@ public class DictionaryService {
         return dictionaryRepository.findAllDictionariesDto();
     }
 
+    public List<String> getExistingDictionariesNames() {
+        return dictionaryRepository.findAll().stream().map(Dictionary::getName).collect(Collectors.toList());
+    }
+
     public Dictionary getDictionaryByName(String name) throws DictionaryNotFoundException {
         return dictionaryRepository.findDictionaryByName(name).orElseThrow(DictionaryNotFoundException::new);
     }

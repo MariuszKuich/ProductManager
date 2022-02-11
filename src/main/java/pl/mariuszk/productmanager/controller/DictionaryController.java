@@ -44,6 +44,7 @@ public class DictionaryController {
     public String getDictionaryAddPage(Model model) {
         model.addAttribute("dictionaryDto", new DictionaryAddDto());
         model.addAttribute("maxDictionaryElementsNumber", ProductManagerConfig.MAX_DICTIONARY_ELEMENTS_SIZE);
+        model.addAttribute("existingDictionaries", dictionaryService.getExistingDictionariesNames());
 
         return "dictionary-add";
     }
