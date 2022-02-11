@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.mariuszk.productmanager.config.ProductManagerConfig;
 import pl.mariuszk.productmanager.exception.DictionaryNotFoundException;
 import pl.mariuszk.productmanager.model.frontend.DictionaryAddDto;
+import pl.mariuszk.productmanager.model.frontend.DictionaryEditDto;
+import pl.mariuszk.productmanager.model.rest.Dictionary;
 import pl.mariuszk.productmanager.service.DictionaryService;
 
 import javax.validation.Valid;
@@ -51,6 +54,25 @@ public class DictionaryController {
             return "dictionary-add";
         }
         dictionaryService.saveDictionary(dictionaryDto);
+
+        return "redirect:/dictionary/list";
+    }
+
+    @GetMapping("/edit")
+    public String getDictionaryEditPage(@RequestParam("dictionaryId") String dictionaryId, Model model) throws DictionaryNotFoundException {
+        Dictionary dictionary = dictionaryService.getDictionaryById(dictionaryId);
+
+        model.addAttribute("dictionary", dictionary);
+        model.addAttribute("dictionaryEditDto", new DictionaryEditDto());
+        model.addAttribute("maxDictionaryElementsNumber", ProductManagerConfig.MAX_DICTIONARY_ELEMENTS_SIZE);
+        model.addAttribute("currentElementIndex", dictionary.getValues().size());
+
+        return "dictionary-edit";
+    }
+
+    @PostMapping("/edit")
+    public String editDictionary(@RequestParam("dictionaryId") String dictionaryId, DictionaryEditDto dictionaryEditDto) throws DictionaryNotFoundException {
+        dictionaryService.saveNewElementsInDictionary(dictionaryId, dictionaryEditDto);
 
         return "redirect:/dictionary/list";
     }

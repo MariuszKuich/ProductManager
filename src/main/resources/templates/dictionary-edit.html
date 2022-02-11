@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl-PL">
+<head>
+    <meta charset="UTF-8">
+    <title>Edycja słownika</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <script type="text/javascript" th:inline="javascript">
+        let maxElementsNumber = [[${maxDictionaryElementsNumber}]] - 1;
+        let fieldsNamesArray;
+        let elementsAlreadyFilledIndex = [[${currentElementIndex}]] - 1;
+        let elementsIndex = [[${currentElementIndex}]] + 1;
+        let handlingResult;
+
+        function handleSubmit() {
+            document.getElementById("duplicatedElementsWarn").style.visibility = "hidden";
+
+            fieldsNamesArray = [];
+            handlingResult = true;
+
+            for (let i = 0; i <= elementsAlreadyFilledIndex; i++) {
+                fieldsNamesArray.push(document.getElementById(`name${i}`).value);
+            }
+
+            for (let i = elementsAlreadyFilledIndex + 1; i < elementsIndex; i++) {
+                checkElementsFields(i);
+            }
+
+            if (handlingResult === true && fieldsNamesArray.length > 0) {
+                checkFieldsNamesUniqueness();
+            }
+
+            return handlingResult;
+        }
+
+        function checkElementsFields(index) {
+            let fieldName = document.getElementById(`name${index}`).value;
+            if (fieldName === "") {
+                document.getElementById(`nameWarn${index}`).style.visibility = "visible";
+                handlingResult = false;
+            }
+            else {
+                fieldsNamesArray.push(fieldName);
+                document.getElementById(`nameWarn${index}`).style.visibility = "hidden";
+            }
+        }
+
+        function checkFieldsNamesUniqueness() {
+            let namesUnique = (new Set(fieldsNamesArray)).size === fieldsNamesArray.length;
+            if (!namesUnique) {
+                document.getElementById("duplicatedElementsWarn").style.visibility = "visible";
+            }
+
+            handlingResult = namesUnique;
+        }
+
+        function addElements() {
+            let container = document.getElementById("elementsContainer");
+            let newContent = document.createElement('newElement');
+            newContent.innerHTML += `<div class="border border-primary" style="padding: 10px; margin-top: 10px">
+                <div>
+                    <label>Nazwa pozycji</label>
+                    <input id="name${elementsIndex}" type="text" name="newFieldsNames[${elementsIndex}]" class="form-control" placeholder="Nazwa"/>
+                    <p id="nameWarn${elementsIndex}" class="text-danger" style="visibility: hidden">Proszę wprowadzić nazwę pozycji.</p>
+                </div>
+            </div>`;
+            container.appendChild(newContent.firstChild);
+
+            elementsIndex = elementsIndex + 1;
+
+            if (elementsIndex > maxElementsNumber) {
+                document.getElementById("btnAddElement").disabled = true;
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1 style="margin-top: 10px;">Edycja słownika</h1>
+            <br />
+            <form id="dataForm" onsubmit="return handleSubmit()" class="form-group" th:action="@{/dictionary/edit(dictionaryId=${dictionary.id})}" th:object="${dictionaryEditDto}" method="post">
+                <div>
+                    <label>Nazwa słownika</label>
+                    <input type="text" class="form-control" th:value="${dictionary.name}" readonly />
+                    <p></p>
+                </div>
+                <div th:each="elem,iter : ${dictionary.values}" style="margin-top: 10px">
+                    <div class="border border-primary" style="padding: 10px">
+                        <div>
+                            <label>Nazwa pozycji</label>
+                            <input th:id="'name' + ${iter.index}" type="text" th:value="${elem}" class="form-control" readonly />
+                        </div>
+                        <p></p>
+                    </div>
+                </div>
+                <div class="border border-primary" style="padding: 10px; margin-top: 10px">
+                    <div>
+                        <label>Nazwa pozycji</label>
+                        <input th:id="'name' + ${currentElementIndex}" type="text" th:field="*{newFieldsNames[__${currentElementIndex}__]}" class="form-control" placeholder="Nazwa" />
+                        <p th:id="'nameWarn' + ${currentElementIndex}" class="text-danger" style="visibility: hidden">
+                            Proszę wprowadzić nazwę pozycji.
+                        </p>
+                    </div>
+                </div>
+                <div id="elementsContainer"></div>
+                <br />
+                <button id="btnAddElement" type="button" class="btn btn-default" onclick="addElements()">+ Dodaj kolejną pozycję</button>
+                <br />
+                <p id="duplicatedElementsWarn" class="text-danger" style="visibility: hidden">
+                    Nazwy pozycji muszą być unikalne.
+                </p>
+                <input type="submit" value="Zatwierdź" class="btn btn-default" />
+            </form>
+            <a th:href="@{/dictionary/list}">Powrót do listy słowników</a>
+            <form th:action="@{/logout}" method="post" style="margin-top: 40px; margin-bottom: 30px;">
+                <input class="btn btn-info" type="submit" value="Wyloguj się"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+</body>
+</html>
