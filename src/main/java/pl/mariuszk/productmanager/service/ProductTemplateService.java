@@ -83,4 +83,8 @@ public class ProductTemplateService {
 
         return dictionariesValuesForFields;
     }
+
+    public List<String> getExistingProductTemplatesNames() {
+        return productTemplateRepository.findAll().stream().map(ProductTemplate::getName).collect(Collectors.toList());
+    }
 }

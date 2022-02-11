@@ -36,6 +36,7 @@ public class ProductGroupController {
         model.addAttribute("templateDto", new ProductTemplateDto());
         model.addAttribute("fieldTypes", productTemplateService.getAvailableFieldTypes());
         model.addAttribute("maxAttributesNumber", ProductManagerConfig.MAX_ATTRIBUTES_SIZE);
+        model.addAttribute("existingProductTemplatesNames", productTemplateService.getExistingProductTemplatesNames());
         return "product-group-add";
     }
 

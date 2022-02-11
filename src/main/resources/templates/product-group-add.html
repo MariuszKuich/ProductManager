@@ -7,11 +7,15 @@
     <script type="text/javascript" th:inline="javascript">
         let attributesValues = [[${fieldTypes}]];
         let maxAttributesNumber = [[${maxAttributesNumber}]] - 1;
+        let existingTemplatesNames = [[${existingProductTemplatesNames}]];
         let attributesIndex = 1;
         let handlingResult;
         let fieldsNamesArray;
 
         function handleSubmit() {
+            document.getElementById("duplicatedKeysWarn").style.visibility = "hidden";
+            document.getElementById("templateNameAlreadyExistsWarn").style.visibility = "hidden";
+
             fieldsNamesArray = [];
             handlingResult = true;
             let mainFieldName = document.getElementById("mainName").value;
@@ -20,6 +24,7 @@
                 handlingResult = false;
             }
             else {
+                checkTemplateNameUniqueness(mainFieldName);
                 document.getElementById("mainNameWarn").style.visibility = "hidden";
             }
 
@@ -57,14 +62,20 @@
 
         function checkFieldsNamesUniqueness() {
             let namesUnique = (new Set(fieldsNamesArray)).size === fieldsNamesArray.length;
-            if (namesUnique) {
-                document.getElementById("duplicatedKeysWarn").style.visibility = "hidden";
-            }
-            else {
+            if (!namesUnique) {
                 document.getElementById("duplicatedKeysWarn").style.visibility = "visible";
             }
 
             handlingResult = namesUnique;
+        }
+
+        function checkTemplateNameUniqueness(mainFieldName) {
+            if (existingTemplatesNames.some(element => {
+                return element.toLowerCase() === mainFieldName.toLowerCase();
+            })) {
+                document.getElementById("templateNameAlreadyExistsWarn").style.visibility = "visible";
+                handlingResult = false;
+            }
         }
 
         function addAttributes() {
@@ -140,6 +151,9 @@
                     <br />
                     <p id="duplicatedKeysWarn" class="text-danger" style="visibility: hidden">
                         Nazwy cech muszą być unikalne.
+                    </p>
+                    <p id="templateNameAlreadyExistsWarn" class="text-danger" style="visibility: hidden">
+                        Grupa produktowa o podanej nazwie istnieje już w systemie.
                     </p>
                     <input type="submit" value="Zatwierdź" class="btn btn-default" />
                 </form>
