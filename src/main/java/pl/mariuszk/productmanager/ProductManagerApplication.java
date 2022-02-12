@@ -38,8 +38,9 @@ public class ProductManagerApplication {
                     .fields(Map.of(
                             "Pojemnosc dysku twardego", FieldType.STRING,
                             "Typ konsoli", FieldType.STRING,
-                            "Kolor", FieldType.STRING_D))
-                    .dictionaries(Collections.singletonMap("Kolor", "KOLORY"))
+                            "Kolor", FieldType.STRING_D,
+                            "Kształt", FieldType.STRING_D))
+                    .dictionaries(Map.of("Kolor", "KOLORY", "Kształt", "KSZTAŁTY"))
                     .build());
 
             tryAddDictionary(dictionaryRepository, Dictionary.builder()
@@ -49,6 +50,10 @@ public class ProductManagerApplication {
             tryAddDictionary(dictionaryRepository, Dictionary.builder()
                     .name("ROZMIARY")
                     .values(List.of("XS", "S", "M", "L", "XL"))
+                    .build());
+            tryAddDictionary(dictionaryRepository, Dictionary.builder()
+                    .name("KSZTAŁTY")
+                    .values(List.of("KWADRAT", "KOŁO", "TRÓJKĄT"))
                     .build());
         };
     }

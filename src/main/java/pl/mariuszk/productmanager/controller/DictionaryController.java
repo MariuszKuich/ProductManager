@@ -28,7 +28,7 @@ public class DictionaryController {
 
     @GetMapping("/list")
     public String getDictionaryListPage(Model model) {
-        model.addAttribute("dictionaries", dictionaryService.getAllDictionariesDto());
+        model.addAttribute("dictionaries", dictionaryService.getAllDictionariesDisplayDto());
 
         return "dictionary-list";
     }
@@ -74,6 +74,15 @@ public class DictionaryController {
     @PostMapping("/edit")
     public String editDictionary(@RequestParam("dictionaryId") String dictionaryId, DictionaryEditDto dictionaryEditDto) throws DictionaryNotFoundException {
         dictionaryService.saveNewElementsInDictionary(dictionaryId, dictionaryEditDto);
+
+        return "redirect:/dictionary/list";
+    }
+
+    @PostMapping("/{dictionaryId}/delete")
+    public String deleteDictionary(@PathVariable(name = "dictionaryId") String dictionaryId) {
+        if (dictionaryService.dictionaryExists(dictionaryId)) {
+            dictionaryService.deleteDictionary(dictionaryId);
+        }
 
         return "redirect:/dictionary/list";
     }
