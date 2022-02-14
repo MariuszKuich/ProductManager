@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import pl.mariuszk.productmanager.enums.FieldType;
 import pl.mariuszk.productmanager.model.ProductTemplate;
-import pl.mariuszk.productmanager.model.rest.Dictionary;
+import pl.mariuszk.productmanager.model.Dictionary;
 import pl.mariuszk.productmanager.repository.DictionaryRepository;
 import pl.mariuszk.productmanager.repository.ProductTemplateRepository;
 

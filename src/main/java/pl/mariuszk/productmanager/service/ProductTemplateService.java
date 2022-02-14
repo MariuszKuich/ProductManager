@@ -9,7 +9,7 @@ import pl.mariuszk.productmanager.mapper.ProductTemplateMapper;
 import pl.mariuszk.productmanager.model.ProductTemplate;
 import pl.mariuszk.productmanager.model.frontend.FieldTypeDto;
 import pl.mariuszk.productmanager.model.frontend.ProductTemplateDto;
-import pl.mariuszk.productmanager.model.rest.Dictionary;
+import pl.mariuszk.productmanager.model.Dictionary;
 import pl.mariuszk.productmanager.model.rest.ProductTemplateBriefDto;
 import pl.mariuszk.productmanager.repository.ProductTemplateRepository;
 

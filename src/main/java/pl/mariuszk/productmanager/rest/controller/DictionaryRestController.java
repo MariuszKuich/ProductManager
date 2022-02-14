@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mariuszk.productmanager.exception.DictionaryNotFoundException;
 import pl.mariuszk.productmanager.model.frontend.DictionaryDto;
-import pl.mariuszk.productmanager.model.rest.Dictionary;
+import pl.mariuszk.productmanager.model.Dictionary;
 import pl.mariuszk.productmanager.service.DictionaryService;
 
 import java.util.List;

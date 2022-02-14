@@ -10,7 +10,7 @@ import pl.mariuszk.productmanager.model.frontend.DictionaryAddDto;
 import pl.mariuszk.productmanager.model.frontend.DictionaryDisplayDto;
 import pl.mariuszk.productmanager.model.frontend.DictionaryDto;
 import pl.mariuszk.productmanager.model.frontend.DictionaryEditDto;
-import pl.mariuszk.productmanager.model.rest.Dictionary;
+import pl.mariuszk.productmanager.model.Dictionary;
 import pl.mariuszk.productmanager.repository.DictionaryRepository;
 import pl.mariuszk.productmanager.repository.ProductTemplateRepository;
 

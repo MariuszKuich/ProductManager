@@ -3,7 +3,7 @@ package pl.mariuszk.productmanager.repository;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import pl.mariuszk.productmanager.model.frontend.DictionaryDto;
-import pl.mariuszk.productmanager.model.rest.Dictionary;
+import pl.mariuszk.productmanager.model.Dictionary;
 
 import java.util.List;
 import java.util.Optional;

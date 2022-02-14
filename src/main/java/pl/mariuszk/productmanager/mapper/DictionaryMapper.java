@@ -2,7 +2,7 @@ package pl.mariuszk.productmanager.mapper;
 
 import org.springframework.stereotype.Service;
 import pl.mariuszk.productmanager.model.frontend.DictionaryAddDto;
-import pl.mariuszk.productmanager.model.rest.Dictionary;
+import pl.mariuszk.productmanager.model.Dictionary;
 
 import java.util.Arrays;
 import java.util.Objects;

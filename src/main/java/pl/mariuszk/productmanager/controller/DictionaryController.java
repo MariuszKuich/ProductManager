@@ -14,7 +14,7 @@ import pl.mariuszk.productmanager.config.ProductManagerConfig;
 import pl.mariuszk.productmanager.exception.DictionaryNotFoundException;
 import pl.mariuszk.productmanager.model.frontend.DictionaryAddDto;
 import pl.mariuszk.productmanager.model.frontend.DictionaryEditDto;
-import pl.mariuszk.productmanager.model.rest.Dictionary;
+import pl.mariuszk.productmanager.model.Dictionary;
 import pl.mariuszk.productmanager.service.DictionaryService;
 
 import javax.validation.Valid;

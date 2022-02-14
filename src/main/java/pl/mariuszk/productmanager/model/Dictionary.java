@@ -1,4 +1,4 @@
-package pl.mariuszk.productmanager.model.rest;
+package pl.mariuszk.productmanager.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
